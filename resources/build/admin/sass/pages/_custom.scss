@@ -1,0 +1,21 @@
+.x_top_message_dropdown_box {
+    .top {
+        padding-bottom: 0 !important;
+    }
+
+    ul {
+        li {
+            padding-left: 0 !important;
+            margin-bottom: 0 !important;
+
+            &::before {
+                display: none;
+            }
+
+            h4,
+            p {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
