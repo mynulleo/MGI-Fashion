@@ -1,59 +1,54 @@
-<!-- Portfolio Section -->
-<section id="portfolio" class="portfolio section light-background">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>Projects</h2>
-        <p>Check Our&nbsp; Projects</p>
-    </div><!-- End Section Title -->
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="isotope-layout" data-default-filter="*" data-layout="fitRows" data-sort="original-order">
-            <!-- Filters -->
-            <div class="portfolio-filters-wrapper" data-aos="fade-up" data-aos-delay="100">
-                <ul class="portfolio-filters isotope-filters">
-                    <li data-filter="*" class="filter-active">All Projects</li>
-                    @foreach ($categories as $category)
-                        <li data-filter=".filter-{{ $category->slug }}">{{ $category->title }}</li>
-                    @endforeach
-                </ul>
+<!-- Project Section Start -->
+<section class="project-area-three fix section-padding pt-0">
+    <div class="container">
+        <div class="section-title-area align-items-end">
+            <div class="section-title">
+                <span class="sub-title wow fadeInUp">
+                    Future Project
+                    <span class="line-1"></span>
+                </span>
+                <h2 class="char-animation">Discover Our Creative Technical <br> Fabric Projects</h2>
             </div>
-            <!-- Portfolio Grid -->
-            <div class="row gy-4 portfolio-grid isotope-container" data-aos="fade-up" data-aos-delay="200">
+            <div class="array-nav">
+                <button class="array-prev slick-arrow">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
 
-                @foreach ($projects as $project)
-                    @php
-                        $category = $categories->firstWhere('id', $project->category_id);
-                        $filterClass = $category ? 'filter-' . $category->slug : '';
-                    @endphp
-
-                    <div class="col-lg-4 col-md-6 portfolio-item isotope-item {{ $filterClass }}">
-                        <div class="portfolio-card">
-                            <div class="image-container">
-                                <img src="{{ $project->image_two }}" class="img-fluid" alt="{{ $project->title }}"
-                                    loading="lazy">
-                                <div class="overlay">
-                                    <div class="overlay-content">
-                                        <a href="{{ $project->original_image }}" class="glightbox zoom-link"
-                                            title="{{ $project->title }}">
-                                            <i class="bi bi-zoom-in"></i>
-                                        </a>
-                                        <a href="{{ route('project', $project->slug) }}" class="details-link"
-                                            title="View Project Details">
-                                            <i class="bi bi-arrow-right"></i>
+                <button class="array-next slick-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="project-wrapper">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="thumb-wrap my-slider">
+                    @if(isset($projects) && count($projects) > 0)
+                        @foreach ($projects as $index => $project)
+                            @php
+                                $projectImg = !empty($project->original_image) ? $project->original_image : (!empty($project->image_two) ? asset($project->image_two) : without_cache('build/theme/img/vedio/project.jpg'));
+                            @endphp
+                            <div class="thumb thumb-active {{ $index == 0 ? 'active' : '' }}">
+                                <div class="projects-item"
+                                    style="background-image: url('{{ $projectImg }}');">
+                                    <div class="card-text-content">
+                                        <h3 class="title"><a href="{{ route('project', $project->slug) }}">{{ $project->title }}</a></h3>
+                                        <p>{{ Str::limit(strip_tags($project->short_description ?? $project->description ?? ''), 100) }}</p>
+                                        <a href="{{ route('project', $project->slug) }}" class="project-btn">
+                                            View More <i class="fa-solid fa-arrow-right"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="content">
-                                <h3>{{ $project->title }}</h3>
-                                <p>{{ $project->short_description }}</p>
-                            </div>
+                        @endforeach
+                    @else
+                        <div class="col-12 text-center py-5">
+                            <p class="text-muted fs-5">No Data Found</p>
                         </div>
-                    </div>
-                @endforeach
-            </div><!-- End Portfolio Grid -->
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
-</section><!-- /Portfolio Section -->
+</section>

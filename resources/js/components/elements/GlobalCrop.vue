@@ -45,7 +45,7 @@
                     <cropper
                         ref="cropper"
                         :src="image"
-                        :stencil-props="aspectRatio"
+                        :stencil-props="computedStencilProps"
                         :default-size="defaultSize"
                         :minHeight="minHeight"
                         :minWidth="minWidth"
@@ -148,6 +148,20 @@ export default {
         id: {
             type: String,
             default: "showCropModal",
+        },
+    },
+    computed: {
+        computedStencilProps() {
+            if (
+                this.aspectRatio &&
+                typeof this.aspectRatio === "object" &&
+                ("aspectRatio" in this.aspectRatio || "aspect-ratio" in this.aspectRatio)
+            ) {
+                return this.aspectRatio;
+            }
+            return {
+                aspectRatio: 0,
+            };
         },
     },
     data() {

@@ -76,7 +76,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('slider-height-width/{id}', [App\Http\Controllers\Admin\Website\Gallery\SliderDetailsController::class, 'heightWidth']);
 
     Route::get('backend-parent-menus', [App\Http\Controllers\Admin\System\MenuController::class, 'getParentMenu'])->name('backendParentMenu');
-    Route::get('/getcategory', [App\Http\Controllers\Admin\ProjectController::class, 'getcategory'])->name('getcategory');
+    Route::get('/getcategory', [App\Http\Controllers\Admin\ProductController::class, 'getcategory'])->name('getcategory');
 
     // User Permission Based Routing...
     Route::middleware('auth.access')->group(function () {
@@ -109,7 +109,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
         Route::resource('category', App\Http\Controllers\Admin\CategoryController::class);
         Route::resource('contacts', App\Http\Controllers\Admin\ContactsController::class);
         Route::resource('faq', App\Http\Controllers\Admin\FaqController::class);
-        Route::resource('project', App\Http\Controllers\Admin\ProjectController::class);
+        Route::resource('product', App\Http\Controllers\Admin\ProductController::class);
+        Route::resource('project', App\Http\Controllers\Admin\ProductController::class);
         // Slider Details Route...
         Route::resource('slider-details', App\Http\Controllers\Admin\Website\Gallery\SliderDetailsController::class);
 

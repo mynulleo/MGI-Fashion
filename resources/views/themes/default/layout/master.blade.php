@@ -2,70 +2,82 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description" content="@yield('description')">
+    <meta name="keywords" content="@yield('tag')">
 
-    <!-- Favicons -->
-    <link rel='icon' type='image/png' sizes='32x32' href="{{ $siteSetting->favicon }}">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ $siteSetting->favicon ?? without_cache('build/theme/img/favicon.svg') }}">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playwrite+DE+SAS:wght@100..400&display=swap"
-        rel="stylesheet">
-
-
-    <!-- Vendor CSS Files -->
-    <link href="{{ without_cache('build/theme/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ without_cache('build/theme/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ without_cache('build/theme/vendor/aos/aos.css') }}" rel="stylesheet">
-    <link href="{{ without_cache('build/theme/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ without_cache('build/theme/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-
-    <!-- Main CSS File -->
-    <link href="{{ without_cache('build/theme/css/main.css') }}" rel="stylesheet">
+    <!-- Vendor & Theme CSS Files -->
+    <link rel="stylesheet" href="{{ without_cache('build/theme/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ without_cache('build/theme/css/fontawsome/css/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ without_cache('build/theme/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ without_cache('build/theme/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ without_cache('build/theme/css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ without_cache('build/theme/css/meanmenu.css') }}">
+    <link rel="stylesheet" href="{{ without_cache('build/theme/css/swiper-bundle.min.css') }}">
+    <link rel="stylesheet" href="{{ without_cache('build/theme/css/nice-select.css') }}">
+    <link rel="stylesheet" href="{{ without_cache('build/theme/css/main.css') }}">
 </head>
 
-<body>
-
-    @include(themeBlade('include.header'))
-    <main class="main">
-        @yield('content')
-    </main>
-
-    @include(themeBlade('include.footer'))
-
-
-
-    <!-- Vendor JS Files --><!-- Scroll Top -->
-    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
-        <i class="bi bi-arrow-up-short"></i>
-    </a>
+<body class="bg-white">
 
     <!-- Preloader -->
-    <div id="preloader">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+    <div class="preloader">
+        <div class="spinner-wrap">
+            <div class="preloader-logo">
+                <img src="{{ $siteSetting->logo_one ?? without_cache('build/theme/img/preloader.svg') }}"
+                    alt="logo" class="img-fluid">
+            </div>
+            <div class="spinner"></div>
+        </div>
     </div>
 
-    <script src="{{ without_cache('build/theme/js/jquery.min.js') }}"></script>
-    <script src="{{ without_cache('build/theme/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ without_cache('build/theme/vendor/php-email-form/validate.js') }}"></script>
-    <script src="{{ without_cache('build/theme/vendor/aos/aos.js') }}"></script>
-    <script src="{{ without_cache('build/theme/vendor/glightbox/js/glightbox.min.js') }}"></script>
-    <script src="{{ without_cache('build/theme/vendor/purecounter/purecounter_vanilla.js') }}"></script>
-    <script src="{{ without_cache('build/theme/vendor/waypoints/noframework.waypoints.js') }}"></script>
-    <script src="{{ without_cache('build/theme/vendor/swiper/swiper-bundle.min.js') }}"></script>
-    <script src="{{ without_cache('build/theme/vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
-    <script src="{{ without_cache('build/theme/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+    <!-- Back To Top Start -->
+    <button id="back-top" class="back-to-top">
+        <i class="fa-regular fa-arrow-up"></i>
+    </button>
 
-    <!-- Main JS File -->
+    <!-- MouseCursor Start -->
+    <div class="mouseCursor cursor-outer"></div>
+    <div class="mouseCursor cursor-inner"></div>
+
+    @include(themeBlade('include.header'))
+
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <main class="main">
+                @yield('content')
+            </main>
+
+            @include(themeBlade('include.footer'))
+
+        </div>
+    </div>
+
+    <!-- All JS Plugins -->
+    <script src="{{ without_cache('build/theme/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/viewport.jquery.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/gsap.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/ScrollTrigger.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/ScrollSmoother.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/ScrollToPlugin.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/SplitText.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/TextPlugin.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/jquery.waypoints.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/jquery.counterup.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/swiper-bundle.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/jquery.meanmenu.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ without_cache('build/theme/js/wow.min.js') }}"></script>
     <script src="{{ without_cache('build/theme/js/main.js') }}"></script>
     @stack('scripts')
 </body>

@@ -49,7 +49,6 @@
 <script>
 import { v4 as uuidv4 } from "uuid";
 
-var editor1 = {};
 export default {
     data() {
         return {
@@ -108,13 +107,17 @@ export default {
 
     methods: {
         getHTML() {
-            console.log(editor1.getData());
+            if (this.editor_instance) {
+                console.log(this.editor_instance.getData());
+            }
         },
         handle(e) {
             console.log(e.target.value);
         },
         update() {
-            this.$emit("update:modelValue", editor1.getData());
+            if (this.editor_instance) {
+                this.$emit("update:modelValue", this.editor_instance.getData());
+            }
         },
         handleTextareaChange() {
             const newValue = this.editor;
@@ -127,7 +130,7 @@ export default {
             immediate: true,
             deep: true,
             handler() {
-                if (this.validate.errors.length > 0) {
+                if (this.validate.errors && this.validate.errors.length > 0) {
                     for (let i = 0; i < this.validate.errors.length; i++) {
                         if (this.field === this.validate.errors[i].field) {
                             this.has_error = true;
@@ -147,8 +150,16 @@ export default {
         },
 
         modelValue(newValue) {
-            if (this.modelValue !== this.editor_instance?.getData()) {
-                this.editor_instance?.setData(newValue);
+            if (this.editor_instance) {
+                try {
+                    if (this.editor_instance.getData() !== (newValue || "")) {
+                        this.editor_instance.setData(newValue || "");
+                    }
+                } catch (e) {
+                    this.editor_instance.on("instanceReady", () => {
+                        this.editor_instance.setData(newValue || "");
+                    });
+                }
             }
         },
     },
@@ -159,22 +170,22 @@ export default {
     },
 
     mounted() {
-        // This component works under the ckeditor own isolated environment,
-        // @change "update" doesn't have any effect. [ 31 October 2023 ]
-
         if (typeof CKEDITOR !== "undefined") {
             const that = this;
             that.editor_instance = CKEDITOR.replace(this.$refs.editor);
 
             const config = `${this.$root.baseurl}/ckeditor/config.js`;
 
-            console.log(config);
             CKEDITOR.config.customConfig = config;
-            that.editor_instance.setData(that.modelValue);
+
+            that.editor_instance.on("instanceReady", function () {
+                if (that.modelValue) {
+                    that.editor_instance.setData(that.modelValue);
+                }
+            });
 
             that.editor_instance.on("change", function () {
-                // that.getHTML();
-                if (that.modelValue !== that.editor_instance.getData()) {
+                if (that.editor_instance && that.modelValue !== that.editor_instance.getData()) {
                     that.$emit(
                         "update:modelValue",
                         that.editor_instance.getData()

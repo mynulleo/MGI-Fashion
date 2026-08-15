@@ -18,7 +18,7 @@ return [
     |
     */
 
-    'cloudflare_resize' => true,
+    'cloudflare_resize' => false,
     'sendgrid_api_key' => env('SENDGRID_API_KEY'),
 
     /*

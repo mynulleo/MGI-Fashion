@@ -806,26 +806,46 @@ const routes = [
                 name: "promoCode.edit",
                 component: () => import("./../views/admin/promoCode/create"),
             },
-            // ------------------Project PORTION------------------
+            // ------------------Product PORTION------------------
+            {
+                path: "/product",
+                name: "product.index",
+                component: () => import("./../views/admin/product/index"),
+            },
+            {
+                path: "/product/create",
+                name: "product.create",
+                component: () => import("./../views/admin/product/create"),
+            },
+            {
+                path: "/product/:id",
+                name: "product.show",
+                component: () => import("./../views/admin/product/view"),
+            },
+            {
+                path: "/product/:id/edit",
+                name: "product.edit",
+                component: () => import("./../views/admin/product/create"),
+            },
             {
                 path: "/project",
                 name: "project.index",
-                component: () => import("./../views/admin/project/index"),
+                component: () => import("./../views/admin/product/index"),
             },
             {
                 path: "/project/create",
                 name: "project.create",
-                component: () => import("./../views/admin/project/create"),
+                component: () => import("./../views/admin/product/create"),
             },
             {
                 path: "/project/:id",
                 name: "project.show",
-                component: () => import("./../views/admin/project/view"),
+                component: () => import("./../views/admin/product/view"),
             },
             {
                 path: "/project/:id/edit",
                 name: "project.edit",
-                component: () => import("./../views/admin/project/create"),
+                component: () => import("./../views/admin/product/create"),
             },
             // ------------------Template PORTION------------------
             {

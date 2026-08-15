@@ -110,7 +110,7 @@ class WebsiteMenus
      */
     public static function footerMenu($fMenu)
     {
-        $output = '<ul>';
+        $output = '<ul class="list-area">';
         foreach ($fMenu ?? [] as $footerMenu) {
             $url = '';
             if ($footerMenu['type'] == 'content') {
@@ -122,7 +122,7 @@ class WebsiteMenus
             } else {
                 $url = $footerMenu['url'];
             }
-            $output .= '<li><a href="' . $url . '" target="_blank"> <i class="bi bi-chevron-right"></i>' . $footerMenu['title'] . '</a></li>';
+            $output .= '<li><a href="' . $url . '" target="_blank"> <i class="fa-solid fa-arrow-right"></i>' . $footerMenu['title'] . '</a></li>';
         }
         $output .= '</ul>';
 
@@ -132,7 +132,7 @@ class WebsiteMenus
     public static function footerServicesMenu()
     {
         $services = Service::where('status', 'active')->get();
-        $output = '<ul>';
+        $output = '<ul class="list-area list-area-3">';
         foreach ($services ?? [] as $service) {
             $url = "/service/" . $service->slug;
 

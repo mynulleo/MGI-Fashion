@@ -157,12 +157,12 @@ export default {
         this.getcategory();
         this.getMediaValidators("Project");
         if (this.$route.params.id) {
-            this.page_title = this.headline(this.model) + " Edit";
+            this.page_title = "Product Edit";
             this.get_data(`${this.model}/${this.$route.params.id}`);
         } else {
             this.get_sorting("Project");
 
-            this.page_title = this.headline(this.model) + " Create";
+            this.page_title = "Product Create";
         }
     },
 

@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-xl-6 col-lg-12">
                     <fieldset>
-                        <span class="legend">Project Details</span>
+                        <span class="legend">Product Details</span>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <tbody>
@@ -138,7 +138,7 @@ const model = "project";
 export default {
     data() {
         return {
-            page_title: "Project View",
+            page_title: "Product View",
             model: model,
             data: {},
             fileColumns: [

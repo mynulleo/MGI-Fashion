@@ -23,6 +23,8 @@ Route::post('contact', [WebsiteController::class, 'contactStore'])->name('contac
 Route::get('faq', [WebsiteController::class, 'faq'])->name('faq');
 Route::get('project', [WebsiteController::class, 'projectlist'])->name('projectlist');
 Route::get('project/{slug}', [WebsiteController::class, 'project'])->name('project');
+Route::get('product', [WebsiteController::class, 'projectlist'])->name('productlist');
+Route::get('product/{slug}', [WebsiteController::class, 'project'])->name('product');
 
 
 // ssl payment gateway start
