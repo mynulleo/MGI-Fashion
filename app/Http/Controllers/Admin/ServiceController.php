@@ -65,19 +65,30 @@ class ServiceController extends BaseController
                 $data = $request->all();
                 $image = $request->image_base64;
                 $image_small = $request->image_small_base64;
-                // dd($image_small);
+
                 $data['slug'] = Service::createSlug($data['title']);
 
-                // push the insert text
-                if (!empty($image)) {
+                // Main Image
+                if (!empty($image) && is_base64($image)) {
                     $resizeValue = $data['image_resize_value'] ?? '1076x541,600x302';
                     $data['image'] = cloudflare(file: $image, folder: 'image', resizeSize: $resizeValue, base64: true);
+                } else if ($request->hasFile('image_base64')) {
+                    $resizeValue = $data['image_resize_value'] ?? '1076x541,600x302';
+                    $data['image'] = cloudflare(file: $request->file('image_base64'), folder: 'image', resizeSize: $resizeValue, base64: false);
+                } else {
+                    unset($data['image']);
                 }
-                if (!empty($image_small)) {
+
+                // Small Image
+                if (!empty($image_small) && is_base64($image_small)) {
                     $resizeValue = $data['image_small_resize_value'] ?? '52x52,40x40';
                     $data['image_small'] = cloudflare(file: $image_small, folder: 'image_small', resizeSize: $resizeValue, base64: true);
+                } else if ($request->hasFile('image_small_base64')) {
+                    $resizeValue = $data['image_small_resize_value'] ?? '52x52,40x40';
+                    $data['image_small'] = cloudflare(file: $request->file('image_small_base64'), folder: 'image_small', resizeSize: $resizeValue, base64: false);
+                } else {
+                    unset($data['image_small']);
                 }
-                // dd($data);
 
                 $res = Service::create($data);
                 return $this->responseReturn("create", $res);
@@ -132,14 +143,31 @@ class ServiceController extends BaseController
                 if ($data['title'] !== $service->title) {
                     $data['slug'] = Service::createSlug($data['title']);
                 }
-                // push the update text
+
+                // Main Image update
                 if (!empty($image) && is_base64($image)) {
                     @$delete->arrayImages($service->image);
-                    $data['image'] = cloudflare(file: $image, folder: 'image', resizeSize: '1076x541,600x302', base64: true);
+                    $resizeValue = $data['image_resize_value'] ?? '1076x541,600x302';
+                    $data['image'] = cloudflare(file: $image, folder: 'image', resizeSize: $resizeValue, base64: true);
+                } else if ($request->hasFile('image_base64')) {
+                    @$delete->arrayImages($service->image);
+                    $resizeValue = $data['image_resize_value'] ?? '1076x541,600x302';
+                    $data['image'] = cloudflare(file: $request->file('image_base64'), folder: 'image', resizeSize: $resizeValue, base64: false);
+                } else {
+                    unset($data['image']);
                 }
+
+                // Small Image update
                 if (!empty($image_small) && is_base64($image_small)) {
                     @$delete->arrayImages($service->image_small);
-                    $data['image_small'] = cloudflare(file: $image_small, folder: 'image_small', resizeSize: '52x52,40x40', base64: true);
+                    $resizeValue = $data['image_small_resize_value'] ?? '52x52,40x40';
+                    $data['image_small'] = cloudflare(file: $image_small, folder: 'image_small', resizeSize: $resizeValue, base64: true);
+                } else if ($request->hasFile('image_small_base64')) {
+                    @$delete->arrayImages($service->image_small);
+                    $resizeValue = $data['image_small_resize_value'] ?? '52x52,40x40';
+                    $data['image_small'] = cloudflare(file: $request->file('image_small_base64'), folder: 'image_small', resizeSize: $resizeValue, base64: false);
+                } else {
+                    unset($data['image_small']);
                 }
 
                 $service->fill($data)->save();

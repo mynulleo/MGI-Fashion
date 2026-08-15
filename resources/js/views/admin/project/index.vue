@@ -142,7 +142,7 @@ export default {
     created() {
         this.getcategory();
         this.getRouteName(this.model);
-        this.page_title = `${this.headline(this.model)} List`;
+        this.page_title = "Product List";
         this.search();
     },
 

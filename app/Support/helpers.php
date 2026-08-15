@@ -109,8 +109,13 @@ if (!function_exists('base64_to_upload_instance')) {
         $baseController = new BaseController();
         $rawImage = $baseController->upload($base64, 'admin', null, $base64 = true);
 
-        $remoteUrl = url('/') . '/public/storage/' . $rawImage;
-        $fileContents = file_get_contents($remoteUrl);
+        if (Storage::disk('public')->exists($rawImage)) {
+            $localPath = Storage::disk('public')->path($rawImage);
+            $fileContents = file_get_contents($localPath);
+        } else {
+            $remoteUrl = url('/') . '/public/storage/' . $rawImage;
+            $fileContents = @file_get_contents($remoteUrl);
+        }
 
         $tmpFile = tmpfile();
         fwrite(
@@ -122,7 +127,7 @@ if (!function_exists('base64_to_upload_instance')) {
 
         $instance = new UploadedFile(
             $tmpFileInfo['uri'],
-            basename($remoteUrl),
+            basename($rawImage),
             mime_content_type($tmpFileInfo['uri']),
             filesize($tmpFileInfo['uri']),
             UPLOAD_ERR_OK,
@@ -144,8 +149,13 @@ if (!function_exists('cloudflare')) {
             $baseController = new BaseController();
             $rawImage = $baseController->upload($file, 'admin', null, $base64 = true);
 
-            $remoteUrl = Storage::url($rawImage);
-            $fileContents = file_get_contents($remoteUrl);
+            if (Storage::disk('public')->exists($rawImage)) {
+                $localPath = Storage::disk('public')->path($rawImage);
+                $fileContents = file_get_contents($localPath);
+            } else {
+                $remoteUrl = Storage::url($rawImage);
+                $fileContents = @file_get_contents($remoteUrl);
+            }
 
             $tmpFile = tmpfile();
             fwrite(
@@ -157,7 +167,7 @@ if (!function_exists('cloudflare')) {
 
             $instance = new UploadedFile(
                 $tmpFileInfo['uri'],
-                basename($remoteUrl),
+                basename($rawImage),
                 mime_content_type($tmpFileInfo['uri']),
                 filesize($tmpFileInfo['uri']),
                 UPLOAD_ERR_OK,

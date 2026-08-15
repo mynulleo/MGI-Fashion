@@ -1,66 +1,75 @@
-<!-- Hero Section -->
-<section id="hero" class="hero section">
-    <div class="hero-content">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="content">
-                        @php
-                            $pagesection = GlobalHelper::getPageSection(1, 'title-slogan');
-                        @endphp
-                        <h1>{{ $slider?->details[0]['title'] }}</h1>
-                        <p>{!! $slider?->details[0]['description'] !!}</p>
-                        <div class="cta-group">
-                            <a href="{{ $slider?->details[0]['button_url'] }}"
-                                class="btn-primary">{{ $slider?->details[0]['button_name'] }}</a>
-                            <a href="{{ $slider?->details[0]['url'] }}" class="btn-secondary glightbox">
-                                <i class="bi bi-play-circle"></i>
-                                <span>Watch Our Story</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="hero-image">
-                        <img src="{{ $slider?->details[0]['original_image'] }}" alt="Corporate Business"
-                            class="img-fluid">
-                        <div class="floating-card" data-aos="fade-up" data-aos-delay="300">
-                            <div class="card-content">
-                                <div class="slogan">{{ $siteSetting->short_title }}</div>
-                                {{-- <div class="metric">
-                                    <span class="number">150+</span>
-                                    <span class="label">Successful Projects</span>
+<!-- Hero Section Start -->
+<section class="hero-section-2 hero-1 fix">
+    <div class="swiper banner-active">
+        <div class="swiper-wrapper">
+            @if (isset($slider) && $slider->details && count($slider->details) > 0)
+                @foreach ($slider->details as $slide)
+                    @php
+                        $slideBg = !empty($slide->original_image)
+                            ? $slide->original_image
+                            : (!empty($slide->image)
+                                ? asset($slide->image)
+                                : without_cache('build/theme/img/hero/hero-bg.jpg'));
+                    @endphp
+                    <div class="swiper-slide">
+                        <div class="hero-height">
+                            <div class="hero-bg bg-cover" style="background-image: url('{{ $slideBg }}');"></div>
+                            <div class="container-fluid">
+                                <div class="row justify-content-center justify-content-xl-start">
+                                    <div class="col-xxl-8 col-xl-10 col-lg-10">
+                                        <div class="hero-content">
+                                            @if (!empty($slide->sub_title))
+                                                <span class="sub-title">
+                                                    {{ $slide->sub_title }}
+                                                </span>
+                                            @endif
+                                            <h1>{!! $slide->title !!}</h1>
+                                            @if (!empty($slide->description))
+                                                <p>{!! $slide->description !!}</p>
+                                            @endif
+                                        </div>
+                                        @if (!empty($slide->button_name))
+                                            <div class="hero-button">
+                                                <a href="{{ $slide->button_url ?? route('contact') }}"
+                                                    class="theme-btn">
+                                                    {{ $slide->button_name }} <i class="fa-solid fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
-                                <div class="metric">
-                                    <span class="number">98%</span>
-                                    <span class="label">Client Satisfaction</span>
-                                </div> --}}
                             </div>
                         </div>
                     </div>
+                @endforeach
+            @else
+                <div class="swiper-slide text-center py-5">
+                    <div class="hero-height d-flex align-items-center justify-content-center">
+                        <p class="text-muted fs-4">No Slider Found</p>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
-
-        <div class="hero-features">
-            <div class="container section-title aos-init aos-animate" data-aos="fade-up">
-                <h2>Our Core Strengths</h2>
-                <div class="row">
-                    @foreach ($featurres as $featurre)
-                        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                            <div class="feature-item">
-                                <div class="icon">
-                                    {!! $featurre->icon !!}
-                                </div>
-                                <h4>{{ $featurre->title }}</h4>
-                                <p>{{ $featurre->description }}</p>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-
     </div>
-
-</section><!-- /Hero Section -->
+    <div class="social-icon-area">
+        <div class="line-1"></div>
+        <ul class="social-icon">
+            @if (!empty($siteSetting->fb))
+                <li><a href="{{ $siteSetting->fb }}"><i class="fab fa-facebook-f"></i></a></li>
+            @endif
+            @if (!empty($siteSetting->tw))
+                <li><a href="{{ $siteSetting->tw }}"><i class="fab fa-twitter"></i></a></li>
+            @endif
+            @if (!empty($siteSetting->yt))
+                <li><a href="{{ $siteSetting->yt }}"><i class="fab fa-youtube"></i></a></li>
+            @endif
+            @if (!empty($siteSetting->ln))
+                <li><a href="{{ $siteSetting->ln }}"><i class="fab fa-linkedin-in"></i></a></li>
+            @endif
+        </ul>
+        <span>Follow</span>
+    </div>
+    <div class="swiper-dot">
+        <div class="dot"></div>
+    </div>
+</section>

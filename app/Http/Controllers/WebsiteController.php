@@ -75,30 +75,30 @@ class WebsiteController extends Controller
 
     public function content($slug = null)
     {
-        // Initialize data array
         $data = [
             'content' => null,
         ];
 
-        // Check if slug is provided
         if ($slug) {
-            // Load content by slug
             $menu = FrontMenu::with('content')->where('slug', $slug)->first();
-            if ($menu->content) {
+            if ($menu && $menu->content) {
                 $data['content'] = $menu->content;
                 $data['menu_title'] = $menu->title;
+            } else {
+                $content = Content::with('files')->where('slug', $slug)->first();
+                if ($content) {
+                    $data['content'] = $content;
+                    $data['menu_title'] = $content->title;
+                }
             }
 
-            // Handle not found
             if (!$data['content']) {
                 abort(404);
             }
 
-            // For other slugs
             return view(themeBlade('pages.content.content-page'), $data);
         }
 
-        // If no slug is provided
         abort(404);
     }
 
@@ -109,25 +109,27 @@ class WebsiteController extends Controller
 
     public function contactStore(Request $request)
     {
-
         $validated = $request->validate([
-            'name'      => 'required|string|min:2|max:30|regex:/^[a-zA-Z-. ]+$/',
+            'name'      => 'required|string|min:2|max:100',
             'email'     => 'required|email',
-            'phone'     => 'required|string',
-            'subject'   => 'required|string|min:2|max:100|regex:/^[a-zA-Z-. ]+$/',
-            'message'   => 'required|string|min:10|max:500',
+            'phone'     => 'nullable|string',
+            'subject'   => 'required|string|min:2|max:191',
+            'message'   => 'required|string|min:5|max:1000',
         ]);
-
 
         $contact = Contacts::create($validated);
 
-        Mail::send(themeBlade('mail.contact-mail'), ['data' => $validated], function ($message) use ($request) {
-            $message->to($request->email)
-                ->subject('Thanks for contacting us!');
-        });
+        try {
+            Mail::send(themeBlade('mail.contact-mail'), ['data' => $validated], function ($message) use ($request) {
+                $message->to($request->email)
+                    ->subject('Thanks for contacting us!');
+            });
+        } catch (\Throwable $e) {
+            // Ignore SMTP delivery failures on local environment
+        }
 
         \Brian2694\Toastr\Facades\Toastr::success('Your mail has been submitted successfully');
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Your message has been submitted successfully!');
     }
 
     public function faq()

@@ -127,9 +127,7 @@ class LibController extends Controller
     {
         return [
             // ['name' => 'Notice', 'value' => 'Notice'],
-            ['name' => 'Project', 'value' => 'Project'],
-            ['name' => 'Events', 'value' => 'Events'],
-            ['name' => 'News', 'value' => 'News'],
+            ['name' => 'Product', 'value' => 'Product'],
         ];
     }
 

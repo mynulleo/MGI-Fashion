@@ -1,65 +1,109 @@
-<footer id="footer" class="footer light-background">
-    <div class="container footer-top">
-        <div class="row gy-4">
-            <div class="col-lg-4 col-md-6 footer-about">
-                <div class="footer-logo-box">
-                    <a href="{{ route('home') }}" class="d-flex align-items-center">
-                        <img src="{{ $siteSetting->logo_two ?? '' }}" class="footer-logo" alt="">
-                    </a>
+<!-- Footer Section Start -->
+<footer class="footer-section bg-cover fix"
+    style="background-image: url('{{ without_cache('build/theme/img/footer/bg-1.jpg') }}');">
+    <div class="container">
+        <div class="footer-widgets-wrapper">
+            <div class="row">
+                <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-8 wow fadeInUp" data-wow-delay=".2s">
+                    <div class="footer-widget-items">
+                        @php
+                            $footerText = GlobalHelper::getPageSection(1, 'footer-text');
+                        @endphp
+                        <div class="widget-content">
+                            <p class="text-white">
+                                {!! $footerText->description ?? '' !!}
+                            </p>
+                            {{-- <h3 class="border-text">Since 1999</h3> --}}
+                        </div>
+                    </div>
                 </div>
-                <div class="footer-contact pt-3">
-                    {{ $siteSetting->address ?? '' }}
-                    <p class="mt-3"><strong>Phone:</strong> <span>{{ $siteSetting->mobile1 ?? '' }}</span></p>
-                    <p><strong>Email:</strong> <span>{{ $siteSetting->contact_email ?? '' }}</span></p>
+                <div class="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 wow fadeInUp" data-wow-delay=".4s">
+                    <div class="footer-widget-items">
+                        <div class="widget-head">
+                            <h4>Quick Links</h4>
+                        </div>
+                        <div class="widget-content">
+                            {!! WebsiteMenus::footerMenu($footerMenu) !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6 wow fadeInUp" data-wow-delay=".6s">
+                    <div class="footer-widget-items">
+                        <div class="widget-head">
+                            <h4>Our Solutions</h4>
+                        </div>
+                        <div class="widget-content">
+                            {!! WebsiteMenus::footerServicesMenu() !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-xl-5 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".8s">
+                    <div class="footer-widget-items">
+                        <div class="widget-head">
+                            <h4>Contact Info</h4>
+                        </div>
+                        <div class="widget-content">
+                            <div class="contact-list">
+                                @if (!empty($siteSetting->address))
+                                    <p class="contact-tittle">{{ $siteSetting->address }}</p>
+                                @endif
+                                @if (!empty($siteSetting->contact_email))
+                                    <p>
+                                        <a href="mailto:{{ $siteSetting->contact_email }}">
+                                            {{ $siteSetting->contact_email }}
+                                        </a>
+                                    </p>
+                                @endif
+                                @if (!empty($siteSetting->mobile1))
+                                    <p>
+                                        <a href="tel:{{ $siteSetting->mobile1 }}">
+                                            {{ $siteSetting->mobile1 }}
+                                        </a>
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="footer-contact-area">
+            <div class="row g-5">
+                <div class="col-xl-6 wow fadeInUp" data-wow-delay=".6s">
+                    <div class="client-area">
+                        <div class="phone-box">
+                            <div class="phone">
+                                <img src="{{ without_cache('build/theme/img/footer/phone.svg') }}" alt="img">
+                            </div>
+                            <div class="content">
+                                <span>Give us a call</span>
+                                <h4>
+                                    <a href="tel:{{ $siteSetting->mobile1 ?? '+1234560789' }}">
+                                        {{ $siteSetting->mobile1 ?? '+123 4560 789' }}
+                                    </a>
+                                </h4>
+                            </div>
+                        </div>
 
-            <div class="col-lg-2 col-md-3 footer-links">
-                <h4>Useful Links</h4>
-                {!! WebsiteMenus::footerMenu($footerMenu) !!}
-            </div>
-
-            <div class="col-lg-2 col-md-3 footer-links">
-                <h4>Our Services</h4>
-                {!! WebsiteMenus::footerServicesMenu() !!}
-                {{-- <ul>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
-                    <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
-                </ul> --}}
-            </div>
-
-            <div class="col-lg-4 col-md-12">
-                @php
-                    $pagesection = GlobalHelper::getPageSection(1, 'follow-us');
-                @endphp
-                <h4>{{ $pagesection->page_title }}</h4>
-                {!! $pagesection->description !!}
-                <div class="social-links d-flex">
-                    <a href="{{ $siteSetting->tw }}"><i class="bi bi-twitter-x"></i></a>
-                    <a href=" {{ $siteSetting->fb }} "><i class="bi bi-facebook"></i></a>
-                    <a href="{{ $siteSetting->yt }}"><i class="bi bi-youtube"></i></a>
-                    <a href="{{ $siteSetting->ln }}"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-xl-6 wow fadeInUp client-area" data-wow-delay=".8s">
+                    <ul class="social-icon">
+                        @if (!empty($siteSetting->fb))
+                            <li><a href="{{ $siteSetting->fb }}"><i class="fab fa-facebook-f"></i></a></li>
+                        @endif
+                        @if (!empty($siteSetting->tw))
+                            <li><a href="{{ $siteSetting->tw }}"><i class="fab fa-twitter"></i></a></li>
+                        @endif
+                        @if (!empty($siteSetting->ln))
+                            <li><a href="{{ $siteSetting->ln }}"><i class="fab fa-linkedin-in"></i></a></li>
+                        @endif
+                        @if (!empty($siteSetting->yt))
+                            <li><a href="{{ $siteSetting->yt }}"><i class="fa-brands fa-youtube"></i></a></li>
+                        @endif
+                    </ul>
                 </div>
             </div>
-
         </div>
     </div>
-
-    <div class="container copyright text-center mt-4">
-        <p>
-            © <span>Copyright</span>
-            <strong class="px-1 sitename">Quill Information Technology</strong>
-            <span>All Rights Reserved</span>
-        </p>
-        <div class="credits">
-            <!-- All the links in the footer should remain intact. -->
-            <!-- You can delete the links only if you've purchased the pro version. -->
-            <!-- Licensing information: https://bootstrapmade.com/license/ -->
-            <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-            Designed by <a href="https://quillitech.com/">QuilliTech</a>
-        </div>
-    </div>
-
 </footer>

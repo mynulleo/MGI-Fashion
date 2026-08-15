@@ -1,199 +1,137 @@
 @php
     $seo = GlobalHelper::get_page_seo('Contact');
+    $pageSection = GlobalHelper::getPageSection(3, 'contact');
 @endphp
 @extends(themeBlade('layout.master'))
-@section('title', "Contact | $siteSetting->title")
+@section('title', "Contact Us | " . ($siteSetting->title ?? 'MGI Fashion'))
 @section('image', $seo->image_three ?? '')
 @section('type', 'text/html')
 @section('url', url()->full())
 @section('tag', is_array($seo->meta_tag ?? '') ? implode(', ', $seo->meta_tag ?? '') : $seo->meta_tag ?? '')
 @section('description', $seo->meta_description ?? '')
+
 @section('content')
-    <!-- Page Title -->
-    <div class="page-title" data-aos="fade">
-        <div class="container d-lg-flex justify-content-between align-items-center">
-            <h1 class="mb-2 mb-lg-0">Contact</h1>
-            <nav class="breadcrumbs">
-                <ol>
+    <!-- breadcrumb section start -->
+    <section class="breadcrumb-wrapper bg-cover fix" style="background-image: url('{{ without_cache('build/theme/img/inner-page/breadcroumb.jpg') }}');">
+        <div class="container">
+            <div class="page-heading wow fadeInUp" data-wow-delay=".3s">
+                <h1>{{ $pageSection->page_title ?? 'Contact Us' }}</h1>
+                <ul class="breadcrumb-list">
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li class="current">Contact</li>
-                </ol>
-            </nav>
+                    <li><i class="fa-solid fa-arrow-right"></i></li>
+                    <li>{{ $pageSection->page_title ?? 'Contact Us' }}</li>
+                </ul>
+            </div>
         </div>
-    </div><!-- End Page Title -->
-    <section id="privacy-2" class="privacy-2 section contact">
-        <div class="container" data-aos="fade-up">
-            <div class="row align-items-stretch">
-                <div class="col-lg-7 order-lg-1 order-2" data-aos="fade-right" data-aos-delay="200">
-                    <div class="contact-form-container">
-                        <div class="form-intro">
-                            @php
-                                $pagesection = GlobalHelper::getPageSection(3, 'contact');
-                            @endphp
-                            <h2>{{ $pagesection->page_title }}</h2>
-                            {!! $pagesection->description !!}
+    </section>
+
+    <!-- contact section start -->
+    <section class="contact-section-3 section-padding fix">
+        <div class="container">
+            <div class="contact-wrapper-3">
+                <div class="contact-area-top">
+                    <h2>Our Contact Information</h2>
+                    <div class="row g-4">
+                        <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-delay=".3s">
+                            <div class="contact-items">
+                                <div class="icon">
+                                    <img src="{{ without_cache('build/theme/img/contact/location01.png') }}" alt="image">
+                                </div>
+                                <div class="content">
+                                    <h3>Our Address</h3>
+                                    <p>{{ $siteSetting->address ?? 'Main Office, Bangladesh' }}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
+                        <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-delay=".5s">
+                            <div class="contact-items">
+                                <div class="icon">
+                                    <img src="{{ without_cache('build/theme/img/contact/phone01.png') }}" alt="image">
                                 </div>
-                            @endif
-
-                            @if (session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
+                                <div class="content">
+                                    <h3>Contact Number</h3>
+                                    @if(!empty($siteSetting->mobile1))
+                                        <p><a href="tel:{{ $siteSetting->mobile1 }}">Mobile: {{ $siteSetting->mobile1 }}</a></p>
+                                    @endif
+                                    @if(!empty($siteSetting->contact_email))
+                                        <p><a href="mailto:{{ $siteSetting->contact_email }}">Email: {{ $siteSetting->contact_email }}</a></p>
+                                    @endif
                                 </div>
-                            @endif
+                            </div>
                         </div>
-
-                        <form action="{{ route('contact.store') }}" method="post" class="php-email-form contact-form">
-                            @csrf
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-field">
-                                        <input type="text" name="name" class="form-input" id="Name"
-                                            placeholder="Your Name" value="{{ old('name') }}" required="">
-                                        <label for="Name" class="field-label">Name</label>
-                                    </div>
-                                    <small id="errorName" class="d-block w-100 text-danger mt-1 fw-medium erro_msg"></small>
+                        <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-delay=".7s">
+                            <div class="contact-items">
+                                <div class="icon">
+                                    <img src="{{ without_cache('build/theme/img/contact/clock01.png') }}" alt="image">
                                 </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-field">
-                                        <input type="email" class="form-input" name="email" id="ContactEmail"
-                                            placeholder="Your Email" required="" value="{{ old('email') }}">
-                                        <label for="ContactEmail" class="field-label">Email</label>
-                                    </div>
-                                    <small id="errorEmail"
-                                        class="d-block w-100 text-danger mt-1 fw-medium erro_msg"></small>
+                                <div class="content">
+                                    <h3>Opening Hour</h3>
+                                    <p>Saturday - Thursday: 9:00 AM - 6:00 PM<br>Friday: Closed</p>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-field">
-                                        <input type="tel" class="form-input" name="phone" id="Phone"
-                                            placeholder="Your Phone" {{ old('phone') }}>
-                                        <label for="Phone" class="field-label">Phone</label>
-                                    </div>
-                                    <small id="errorPhone"
-                                        class="d-block w-100 text-danger mt-1 fw-medium erro_msg"></small>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-field">
-                                        <input type="text" class="form-input" name="subject" id="Subject"
-                                            placeholder="Subject" required="" value="{{ old('subject') }}">
-                                        <label for="Subject" class="field-label">Subject</label>
-                                    </div>
-                                    <small id="errorSubject"
-                                        class="d-block w-100 text-danger mt-1 fw-medium erro_msg"></small>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-field message-field">
-                                        <textarea class="form-input message-input" name="message" id="Message" rows="5"
-                                            placeholder="Tell us about your project" required=""> {{ old('message') }} </textarea>
-                                        <label for="Message" class="field-label">Message</label>
-                                        <small class="text-muted mt-1 d-block">Characters used: <span
-                                                id="charCount">0</span>/500</small>
-                                    </div>
-                                    <small id="error" class="d-block w-100 text-danger mt-1 fw-medium erro_msg"></small>
-
-                                </div>
-                            </div>
-
-                            <div class="my-3">
-                                <div class="loading">Loading</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message">Your message has been sent. Thank you!</div>
-                            </div>
-
-                            <button type="submit" class="send-button">
-                                Send Message
-                                <span class="button-arrow">→</span>
-                            </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
-
-                <div class="col-lg-5 order-lg-2 order-1" data-aos="fade-left" data-aos-delay="300">
-                    <div class="contact-sidebar">
-                        <div class="contact-header">
-                            @php
-                                $pagesection = GlobalHelper::getPageSection(3, 'get-in-touch');
-                            @endphp
-
-                            <h3>{{ $pagesection->page_title }}</h3>
-                            {!! $pagesection->description !!}
-                        </div>
-
-                        <div class="contact-methods">
-                            <div class="contact-method" data-aos="fade-in" data-aos-delay="350">
-                                <div class="contact-icon">
-                                    <i class="bi bi-geo-alt"></i>
-                                </div>
-                                <div class="contact-details">
-                                    <span class="method-label">Address</span>
-                                    <p>{{ $siteSetting->address ?? '' }}</p>
-                                </div>
-                            </div>
-
-                            <div class="contact-method" data-aos="fade-in" data-aos-delay="400">
-                                <div class="contact-icon">
-                                    <i class="bi bi-envelope"></i>
-                                </div>
-                                <div class="contact-details">
-                                    <span class="method-label">Email</span>
-                                    <p>{{ $siteSetting->contact_email ?? '' }}</p>
-                                </div>
-                            </div>
-
-                            <div class="contact-method" data-aos="fade-in" data-aos-delay="450">
-                                <div class="contact-icon">
-                                    <i class="bi bi-telephone"></i>
-                                </div>
-                                <div class="contact-details">
-                                    <span class="method-label">Phone</span>
-                                    <p>{{ $siteSetting->mobile1 ?? '' }}</p>
-                                </div>
-                            </div>
-
-                            <div class="contact-method" data-aos="fade-in" data-aos-delay="500">
-                                <div class="contact-icon">
-                                    <i class="bi bi-clock"></i>
-                                </div>
-                                <div class="contact-details">
-                                    <span class="method-label">Hours</span>
-                                    <p>Sunday - Thursday: 9AM - 6PM
-                                        <br>Friday: Weekend
-                                        <br>Saturday: Weekend
-                                    </p>
-                                </div>
+                <div class="contact-area-bottom">
+                    <div class="row g-5">
+                        <div class="col-lg-6 wow fadeInUp" data-wow-delay=".5s">
+                            <div class="google-map">
+                                @if(!empty($siteSetting->map_link))
+                                    <iframe src="{{ $siteSetting->map_link }}" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                @else
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.902442430137!2d90.391080!3d23.750860!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDQ1JzAzLjEiTiA5MMKwMjMnMjctOSJF!5e0!3m2!1sen!2sbd!4v1641984054261!5m2!1sen!2sbd" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                @endif
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="contact-from">
+                                <h3 class="mb-3">Get In Touch</h3>
+                                
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mb-3">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
 
-                        <div class="connect-section" data-aos="fade-up" data-aos-delay="550">
-                            <span class="connect-label">Connect with us</span>
-                            <div class="social-links">
-                                <a href="{{ $siteSetting->ln }}" class="social-link">
-                                    <i class="bi bi-linkedin"></i>
-                                </a>
-                                <a href="{{ $siteSetting->tw }}" class="social-link">
-                                    <i class="bi bi-twitter-x"></i>
-                                </a>
-                                <a href="{{ $siteSetting->yt }}" class="social-link">
-                                    <i class="bi bi-instagram"></i>
-                                </a>
-                                <a href="{{ $siteSetting->fb }}" class="social-link">
-                                    <i class="bi bi-facebook"></i>
-                                </a>
+                                @if (session('success'))
+                                    <div class="alert alert-success mb-3">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+
+                                <form action="{{ route('contact.store') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-sm-12 mb-3 wow fadeInUp" data-wow-delay=".2s">
+                                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Full Name *" class="inptFld" required>
+                                        </div>
+
+                                        <div class="col-sm-12 mb-3 wow fadeInUp" data-wow-delay=".4s">
+                                            <input type="email" name="email" value="{{ old('email') }}" placeholder="Email Address *" class="inptFld" required>
+                                        </div>
+                                        
+                                        <div class="col-sm-12 mb-3 wow fadeInUp" data-wow-delay=".6s">
+                                            <input type="text" name="phone" value="{{ old('phone') }}" placeholder="Phone Number" class="inptFld">
+                                        </div>
+
+                                        <div class="col-sm-12 mb-3 wow fadeInUp" data-wow-delay=".7s">
+                                            <input type="text" name="subject" value="{{ old('subject') }}" placeholder="Subject *" class="inptFld" required>
+                                        </div>
+
+                                        <div class="col-sm-12 mb-3 wow fadeInUp" data-wow-delay=".8s">
+                                            <textarea name="message" class="inptFld mb-0" placeholder="Type Your Message *" rows="5" required>{{ old('message') }}</textarea>
+                                        </div>            
+                                    </div>
+                                    <div class="contact-button mt-3 wow fadeInUp" data-wow-delay=".9s">
+                                        <button type="submit" class="theme-btn">
+                                            SEND A MESSAGE <i class="fa-solid fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -201,172 +139,4 @@
             </div>
         </div>
     </section>
-
 @endsection
-
-@push('styles')
-    <style>
-        .border-red {
-            border: 1px solid red !important;
-        }
-
-        .invalid {
-            border: 2px solid red !important;
-        }
-
-        .hide {
-            display: none;
-        }
-    </style>
-@endpush
-
-
-@push('scripts')
-    <script>
-        $(document).ready(function() {
-            const name = $('#Name');
-            const email = $('#ContactEmail');
-            const phone = $('#Phone');
-            const subject = $('#Subject');
-            const message = $('#Message');
-            const errorName = $('#errorName');
-            const errorEmail = $('#errorEmail');
-            const errorPhone = $('#errorPhone');
-            const errorSubject = $('#errorSubject');
-            const errorMessage = $('#error');
-            const charCount = $('#charCount');
-
-            // Name validation
-            function checkName() {
-                const val = name.val().trim();
-                const regex = /^[a-zA-Z-. ]{2,30}$/;
-                if (!regex.test(val)) {
-                    errorName.text('Required min 2 to max 30 letters');
-                    name.addClass('border-red');
-                    return false;
-                }
-                errorName.text('');
-                name.removeClass('border-red');
-                return true;
-            }
-
-            // Email validation
-            function checkEmail() {
-                const val = email.val().trim();
-                if (val === '') {
-                    errorEmail.text('Email is required');
-                    email.addClass('border-red');
-                    return false;
-                }
-                const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                if (!regex.test(val)) {
-                    errorEmail.text('Valid email is required');
-                    email.addClass('border-red');
-                    return false;
-                }
-                errorEmail.text('');
-                email.removeClass('border-red');
-                return true;
-            }
-
-            // Phone validation
-            // ===== Phone Input Validation with intl-tel-input =====
-            const input = phone[0];
-            const errorMap = ["Invalid number", "Invalid country code", "Invalid number"];
-
-
-            function checkPhone() {
-                phone.removeClass("border-red");
-                errorPhone.text("").addClass("hide");
-
-                const val = phone.val().trim();
-
-                // শূন্য থাকলে
-                if (val === "") {
-                    errorPhone.text("Phone number is required").removeClass("hide");
-                    phone.addClass("border-red");
-                    return false;
-                }
-
-                // ১১ ডিজিট চেক
-                if (!/^\d{11}$/.test(val)) {
-                    errorPhone.text("Phone number must be exactly 11 digits").removeClass("hide");
-                    phone.addClass("border-red");
-                    return false;
-                }
-
-                // 01 দিয়ে শুরু হচ্ছে কিনা চেক
-                if (!/^01\d{9}$/.test(val)) {
-                    errorPhone.text("Phone number must start with 01").removeClass("hide");
-                    phone.addClass("border-red");
-                    return false;
-                }
-
-                return true;
-            }
-
-            // Subject validation
-            function checkSubject() {
-                const val = subject.val().trim();
-                const regex = /^[a-zA-Z-. ]{2,100}$/;
-                if (!regex.test(val)) {
-                    errorSubject.text('Required min 2 to max 100 letters');
-                    subject.addClass('border-red');
-                    return false;
-                }
-                errorSubject.text('');
-                subject.removeClass('border-red');
-                return true;
-            }
-
-            // Message validation
-            function checkMessage() {
-                let val = message.val();
-                let len = val.length;
-
-                if (len > 500) {
-                    val = val.substring(0, 500);
-                    message.val(val); // Truncate extra input
-                    len = 500;
-                    errorMessage.text('Maximum 500 letters allowed');
-                    message.addClass('border-red');
-                    charCount.text(len);
-                    return false;
-                }
-
-                charCount.text(len);
-
-                if (len < 10) {
-                    errorMessage.text('Minimum 10 letters required');
-                    message.addClass('border-red');
-                    return false;
-                }
-
-                errorMessage.text('');
-                message.removeClass('border-red');
-                return true;
-            }
-
-            // Live validation
-            name.on('input', checkName);
-            email.on('input', checkEmail);
-            phone.on('input', checkPhone);
-            subject.on('input', checkSubject);
-            message.on('input', checkMessage);
-
-            // On form submit
-            $('#contact-form').on('submit', function(e) {
-                alert('1');
-                const validName = checkName();
-                const validEmail = checkEmail();
-                const validPhone = checkPhone();
-                const validSubject = checkSubject();
-                const validMessage = checkMessage();
-
-                if (!validName || !validEmail || !validPhone || !validSubject || !validMessage) {
-                    e.preventDefault(); // Stop form submission
-                }
-            });
-        });
-    </script>
-@endpush

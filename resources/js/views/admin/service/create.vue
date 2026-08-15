@@ -15,7 +15,7 @@
         </GlobalCrop>
 
         <File title="Small Image" cropModalId="image_small_crop_modal" field="data.original_image_small" mime="img"
-            :req="false" fileClassName="file2" :showCrop="false"
+            :req="false" fileClassName="file2" :showCrop="true"
             :vHeight="$root.media_validators?.image_small?.min_height ?? 52"
             :vWidth="$root.media_validators?.image_small?.min_width ?? 52"
             :vSizeInKb="$root.media_validators?.image_small?.max_size ?? 5000" col="3 col-12" />
@@ -140,6 +140,8 @@ export default {
         },
     },
     created() {
+        this.getMediaValidators(model);
+
         if (this.$route.params.id) {
             this.page_title = this.headline(this.model) + " Edit";
             this.get_data(`${this.model}/${this.$route.params.id}`);

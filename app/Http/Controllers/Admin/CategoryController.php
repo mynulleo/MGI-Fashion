@@ -60,6 +60,9 @@ class CategoryController extends BaseController
         if ($this->validateCheck($request)) { // Validation check passed
             try {
                 $data = $request->all();
+                if (empty($data['slug']) && !empty($data['title'])) {
+                    $data['slug'] = Category::createSlug($data['title']);
+                }
                 $res = Category::create($data);
                 return $this->responseReturn('create', $res);
             } catch (Exception $ex) {
@@ -102,7 +105,9 @@ class CategoryController extends BaseController
         if ($this->validateCheck($request, $category->id)) {
             try {
                 $data = $request->all();
-                // push the update text
+                if (empty($data['slug']) && !empty($data['title'])) {
+                    $data['slug'] = Category::createSlug($data['title'], $category->id);
+                }
                 $category->fill($data)->save();
 
                 return $this->responseReturn('update', $category);

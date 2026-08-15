@@ -1,62 +1,113 @@
-<header id="header" class="header sticky-top">
-
-    <div class="topbar d-flex align-items-center dark-background">
-        <div class="container d-flex justify-content-center justify-content-md-between">
-            <div class="contact-info d-flex align-items-center">
-                <i class="bi bi-envelope d-flex align-items-center"><a
-                        href="mailto:contact@example.com">{{ $siteSetting->contact_email ?? '' }}</a></i>
-                <i class="bi bi-phone d-flex align-items-center ms-4"><span>{{ $siteSetting->mobile1 ?? '' }}</span></i>
-            </div>
-            <div class="social-links d-none d-md-flex align-items-center">
-                <a href="{{ $siteSetting->tw ?? '' }}" class="twitter"><i class="bi bi-twitter-x"></i></a>
-                <a href="{{ $siteSetting->fb ?? '' }}" class="facebook"><i class="bi bi-facebook"></i></a>
-                <a href="{{ $siteSetting->yt ?? '' }}" class="youtube"><i class="bi bi-youtube"></i></a>
-                <a href="{{ $siteSetting->ln ?? '' }}" class="linkedin"><i class="bi bi-linkedin"></i></a>
+<!-- Offcanvas Area Start -->
+<div class="fix-area">
+    <div class="offcanvas__info">
+        <div class="offcanvas__wrapper">
+            <div class="offcanvas__content">
+                <div class="offcanvas__top mb-5 d-flex justify-content-between align-items-center">
+                    <div class="offcanvas__logo">
+                        <a href="{{ route('home') }}">
+                            <img src="{{ $siteSetting->logo_two ?? without_cache('build/theme/img/logo/black-logo.svg') }}"
+                                alt="logo-img" style="width:100px;">
+                        </a>
+                    </div>
+                    <div class="offcanvas__close">
+                        <button>
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text d-none d-xl-block">
+                    {{ $siteSetting->about_us ?? 'We are a leading Texora & garment manufacturing company dedicated producing high quality fabrics and apparel for global brands.' }}
+                </p>
+                <div class="mobile-menu fix mb-3"></div>
+                <div class="offcanvas__contact">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        @if (!empty($siteSetting->address))
+                            <li class="d-flex align-items-center">
+                                <div class="offcanvas__contact-icon">
+                                    <i class="fal fa-map-marker-alt"></i>
+                                </div>
+                                <div class="offcanvas__contact-text">
+                                    <a target="_blank" href="#">{{ $siteSetting->address }}</a>
+                                </div>
+                            </li>
+                        @endif
+                        @if (!empty($siteSetting->contact_email))
+                            <li class="d-flex align-items-center">
+                                <div class="offcanvas__contact-icon mr-15">
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+                                <div class="offcanvas__contact-text">
+                                    <a
+                                        href="mailto:{{ $siteSetting->contact_email }}">{{ $siteSetting->contact_email }}</a>
+                                </div>
+                            </li>
+                        @endif
+                        @if (!empty($siteSetting->mobile1))
+                            <li class="d-flex align-items-center">
+                                <div class="offcanvas__contact-icon mr-15">
+                                    <i class="far fa-phone"></i>
+                                </div>
+                                <div class="offcanvas__contact-text">
+                                    <a href="tel:{{ $siteSetting->mobile1 }}">{{ $siteSetting->mobile1 }}</a>
+                                </div>
+                            </li>
+                        @endif
+                    </ul>
+                    <a href="{{ route('contact') }}" class="theme-btn mt-4">
+                        Contact Us
+                        <i class="fa-solid fa-arrow-up-right"></i>
+                    </a>
+                    <div class="social-icon d-flex align-items-center">
+                        @if (!empty($siteSetting->fb))
+                            <a href="{{ $siteSetting->fb }}"><i class="fab fa-facebook-f"></i></a>
+                        @endif
+                        @if (!empty($siteSetting->tw))
+                            <a href="{{ $siteSetting->tw }}"><i class="fab fa-twitter"></i></a>
+                        @endif
+                        @if (!empty($siteSetting->yt))
+                            <a href="{{ $siteSetting->yt }}"><i class="fab fa-youtube"></i></a>
+                        @endif
+                        @if (!empty($siteSetting->ln))
+                            <a href="{{ $siteSetting->ln }}"><i class="fab fa-linkedin-in"></i></a>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
-    </div><!-- End Top Bar -->
-    <div class="branding d-flex align-items-cente">
-        <div class="container position-relative d-flex align-items-center justify-content-between">
-            <a href="{{ route('home') }}" class="logo d-flex align-items-center">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                <img src="{{ $siteSetting->logo_two ?? '' }}" alt="">
-                <!-- <h1 class="sitename"></h1> -->
-            </a>
+    </div>
+</div>
+<div class="offcanvas__overlay"></div>
 
-            <nav id="navmenu" class="navmenu">
-                {{-- <ul>
-                    <li><a href="#hero" class="active">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#team">Team</a></li>
-                    <li class="dropdown">
-                        <a href="#">
-                            <span>Dropdown</span>
-                            <i class="bi bi-chevron-down toggle-dropdown"></i>
-                        </a>
-                        <ul>
-                            <li><a href="#">Dropdown 1</a></li>
-                            <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
-                                        class="bi bi-chevron-down toggle-dropdown"></i></a>
-                                <ul>
-                                    <li><a href="#">Deep Dropdown 1</a></li>
-                                    <li><a href="#">Deep Dropdown 2</a></li>
-                                    <li><a href="#">Deep Dropdown 3</a></li>
-                                    <li><a href="#">Deep Dropdown 4</a></li>
-                                    <li><a href="#">Deep Dropdown 5</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Dropdown 2</a></li>
-                            <li><a href="#">Dropdown 3</a></li>
-                            <li><a href="#">Dropdown 4</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul> --}}
-                {!! WebsiteMenus::buildMenuHtml($frontMenus) !!}
-                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-            </nav>
+<!-- Header Section Start -->
+<header id="header-sticky" class="header-1 header-one">
+    <div class="container">
+        <div class="mega-menu-wrapper">
+            <div class="header-main">
+                <a href="{{ route('home') }}" class="logo">
+                    <img src="{{ $siteSetting->logo_two ?? without_cache('build/theme/img/logo/black-logo.svg') }}"
+                        alt="logo" style="width:100px;">
+                </a>
+                <div class="mean__menu-wrapper">
+                    <div class="main-menu">
+                        <nav id="mobile-menu">
+                            {!! WebsiteMenus::buildMenuHtml($frontMenus) !!}
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="header-right d-flex justify-content-end align-items-center">
+                    <a href="{{ route('contact') }}" class="theme-btn">
+                        Contact Us <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <div class="header__hamburger d-xl-none my-auto">
+                        <div class="sidebar__toggle">
+                            <i class="fa-regular fa-bars"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </header>

@@ -11,7 +11,7 @@ mix.js("resources/js/app.js", "public/build/js")
 // SASS CSS
 mix.sass(
     "resources/build/admin/sass/style.scss",
-    "public/build/admin/css"
+    "public/build/admin/css",
 ).sourceMaps(true, "source-map");
 
 // theme sass

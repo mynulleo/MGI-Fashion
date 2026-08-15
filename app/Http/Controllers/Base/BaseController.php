@@ -114,8 +114,13 @@ class BaseController extends Controller
 
         $rawImage = $this->upload($profile, 'admin', null, $base64 = true);
 
-        $remoteUrl = Storage::url($rawImage);
-        $fileContents = file_get_contents($remoteUrl);
+        if (Storage::disk('public')->exists($rawImage)) {
+            $localPath = Storage::disk('public')->path($rawImage);
+            $fileContents = file_get_contents($localPath);
+        } else {
+            $remoteUrl = Storage::url($rawImage);
+            $fileContents = @file_get_contents($remoteUrl);
+        }
 
         $tmpFile = tmpfile();
         fwrite(
@@ -127,7 +132,7 @@ class BaseController extends Controller
 
         $instance = new UploadedFile(
             $tmpFileInfo['uri'],
-            basename($remoteUrl),
+            basename($rawImage),
             mime_content_type($tmpFileInfo['uri']),
             filesize($tmpFileInfo['uri']),
             UPLOAD_ERR_OK,

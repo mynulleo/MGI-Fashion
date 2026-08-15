@@ -1,57 +1,54 @@
-<!-- About Section -->
-<section id="about" class="about section">
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        @php
-            $pagesection = GlobalHelper::getPageSection(1, 'about-us-title');
-        @endphp
-        <h2>{{ $pagesection->page_title }}</h2>
-    </div><!-- End Section Title -->
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row">
-            <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
-                <div class="content">
-                    <h2>{{ $about->title }}</h2>
-
-
-                    <div class="description">
-                        {!! Str::limit(strip_tags($about->description ?? ''), 1050, '...') !!}
-                    </div>
-
-                    <div class="stats-row">
-                        <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+<!-- About Section Start -->
+<section class="about-section fix section-padding section-bg">
+    <div class="container">
+        <div class="about-wrapper-one">
+            <div class="row g-4">
+                <div class="col-xl-7 col-lg-6">
+                    <div class="about-content">
+                        <div class="section-title mb-0">
+                            <span class="sub-title wow fadeInUp">
+                                About Us
+                            </span>
                             @php
-                                $pagesection = GlobalHelper::getPageSection(1, 'our-moto');
+                                $pagesection = GlobalHelper::getPageSection(1, 'about-us');
                             @endphp
-                            <h4 class="moto">{{ $pagesection->page_title }}</h4>
-
+                            <h2 class="char-animation">
+                                {{ $pagesection->title ?? '' }}
+                            </h2>
                         </div>
-                    </div><!-- End Stats Row -->
+                        <p class="about-text wow fadeInUp">
+                            {!! $pagesection->description ?? '' !!}
+                        </p>
 
-                    <div class="cta-section" data-aos="fade-up" data-aos-delay="300">
-                        <a href="{{ route('page', 'about-us') }}" class="btn-link">Read More <i
-                                class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
-                <div class="image-container">
-                    <img src="{{ $about->image_one ?? '' }}" alt="About Us" class="img-fluid">
-                    <div class="image-overlay">
-                        <div class="overlay-content">
-                            <i class="bi bi-award"></i>
-                            <div class="overlay-text">
-                                <h4>Award Winning</h4>
-                                <p>Excellence in Service</p>
+                        <div class="about-bottom-area wow fadeInUp" data-wow-delay=".8s">
+                            <a href="{{ route('page', 'about-us') }}" class="theme-btn">
+                                Explore More <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                            <div class="client-phn-area">
+                                <div class="phone-icon">
+                                    <img src="{{ without_cache('build/theme/img/about/phone.svg') }}" alt="image">
+                                </div>
+                                <div class="client-content">
+                                    <p>Call Center 24/7</p>
+                                    <a
+                                        href="tel:{{ $siteSetting->mobile1 ?? '' }}">{{ $siteSetting->mobile1 ?? '+1 (212)-578-5758' }}</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-5 col-lg-6 wow fadeInUp" data-wow-delay=".3s">
+                    <div class="about-image-items">
+                        {{-- <div class="about-image-2">
+                            <img src="{{ $pagesection->image_one }}" alt="img">
+                        </div> --}}
+                        <div class="about-image fix wow fadeInUp" data-wow-delay=".5s">
+                            <img src="{{ $pagesection->image_one }}" alt="image">
+                        </div>
+                        <p class="text">{{ $siteSetting->title ?? '' }}</p>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
-
-</section><!-- /About Section -->
+</section>

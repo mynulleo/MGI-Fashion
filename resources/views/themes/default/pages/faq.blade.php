@@ -1,5 +1,6 @@
 @php
     $seo = GlobalHelper::get_page_seo('faq');
+    $pageSection = GlobalHelper::getPageSection(1, 'faq');
 @endphp
 @extends(themeBlade('layout.master'))
 @section('title', 'FAQ')
@@ -8,74 +9,118 @@
 @section('url', url()->full())
 @section('tag', is_array($seo->meta_tag ?? '') ? implode(', ', $seo->meta_tag ?? '') : $seo->meta_tag ?? '')
 @section('description', $seo->meta_description ?? '')
+
 @section('content')
-    <!-- Page Title -->
-    <div class="page-title" data-aos="fade">
-        <div class="container d-lg-flex justify-content-between align-items-center">
-            <h1 class="mb-2 mb-lg-0">FAQ</h1>
-            <nav class="breadcrumbs">
-                <ol>
+    <!-- breadcrumb section start -->
+    <section class="breadcrumb-wrapper bg-cover fix"
+        style="background-image: url('{{ without_cache('build/theme/img/inner-page/breadcroumb.jpg') }}');">
+        <div class="container">
+            <div class="page-heading wow fadeInUp" data-wow-delay=".3s">
+                <h1>Frequently Asked Questions</h1>
+                <ul class="breadcrumb-list">
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li class="current">FAQ</li>
-                </ol>
-            </nav>
-        </div>
-    </div><!-- End Page Title -->
-
-    <section id="privacy-2" class="privacy-2 section">
-        <div class="container" data-aos="fade-up">
-            <div class="text-center wow fadeIn" data-wow-delay="0.1s">
-                @php
-                    $pagesection = GlobalHelper::getPageSection(1, 'faq');
-                @endphp
-                <h1 class="mb-5">{{ $pagesection->page_title }}
-                    <span class="text-uppercase text-primary bg-light px-2">
-                        {{ $pagesection->sub_title }}
-                    </span>
-                </h1>
+                    <li><i class="fa-solid fa-arrow-right"></i></li>
+                    <li>{{ 'FAQs' }}</li>
+                </ul>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-7">
-                    <p class="text-center mb-4">
-                        {!! $pagesection->description !!}
-                    </p>
+        </div>
+    </section>
 
-                    <div class="wow fadeIn" data-wow-delay="0.3s">
-                        <!-- FAQ Accordion -->
-                        <div class="accordion" id="faqAccordion">
-                            @foreach ($faq_datas as $index => $faq)
-                                @php
-                                    $show = '';
-                                    if ($index == 0) {
-                                        $show = 'show';
-                                    }
-                                @endphp
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading{{ $index }}">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#faq{{ $index }}" aria-expanded="true"
-                                            aria-controls="faq{{ $index }}">
-                                            <strong>
-                                                <i>{{ $index + 1 }} . {{ $faq->question }}</i>
-                                            </strong>
-                                        </button>
-                                    </h2>
-                                    <div id="faq{{ $index }}" class="accordion-collapse collapse {{ $show }}"
-                                        aria-labelledby="heading{{ $index }}" data-bs-parent="#faqAccordion">
-                                        <div class="accordion-body">
-                                            {!! $faq->answer !!}
-                                        </div>
-                                    </div>
+    <!-- faq section start -->
+    <section class="faq-section section-padding bg-white fix">
+        <div class="container">
+            <div class="faq-wrapper">
+                <div class="row g-4">
+                    <div class="col-lg-7 wow fadeInUp" data-wow-delay=".6s">
+                        <div class="faq-content">
+                            <div class="section-title mb-0">
+                                <p class="sub-title wow fadeInUp">
+                                    {{ !empty($pageSection->sub_title) && $pageSection->sub_title != 'undefined' ? $pageSection->sub_title : 'Frequently Asked Questions' }}
+                                    <span class="line-1"></span>
+                                </p>
+                                <h2 class="char-animation">
+                                    {{ $pageSection->title ?? 'Assisting you in comprehending our Texora offerings' }}</h2>
+                            </div>
+                            <div class="faq-text wow fadeInUp" data-wow-delay=".3s">
+                                {!! $pageSection->description ??
+                                    'Texora & Garment Factory website, the FAQ section should address B2B buyer concerns MOQ, lead time, quality control, export, customization, etc.' !!}
+                            </div>
+                            <div class="client-info-items wow fadeInUp" data-wow-delay=".5s">
+                                <div class="client-info-top">
+                                    <img src="{{ without_cache('build/theme/img/new-item/client-group.png') }}"
+                                        alt="img">
+                                    <span>people are choosing us for Texora work</span>
                                 </div>
-                            @endforeach
+                                <div class="client-info-bottom">
+                                    @if (!empty($siteSetting->mobile1))
+                                        <div class="contact-info">
+                                            <div class="icon">
+                                                <img src="{{ without_cache('build/theme/img/new-item/phone-icon.png') }}"
+                                                    alt="img">
+                                            </div>
+                                            <div class="content">
+                                                <p>call us any time</p>
+                                                <a href="tel:{{ $siteSetting->mobile1 }}"
+                                                    class="info-link">{{ $siteSetting->mobile1 }}</a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if (!empty($siteSetting->contact_email))
+                                        <div class="contact-info">
+                                            <div class="icon">
+                                                <img src="{{ without_cache('build/theme/img/new-item/mail-icon.png') }}"
+                                                    alt="img">
+                                            </div>
+                                            <div class="content">
+                                                <p>Email Us</p>
+                                                <a
+                                                    href="mailto:{{ $siteSetting->contact_email }}">{{ $siteSetting->contact_email }}</a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="faq-items">
+                            <div class="accordion" id="accordionExample">
+                                @if (isset($faq_datas) && count($faq_datas) > 0)
+                                    @foreach ($faq_datas as $index => $faq)
+                                        @php
+                                            $show = $index == 0 ? 'show' : '';
+                                            $collapsed = $index == 0 ? '' : 'collapsed';
+                                            $expanded = $index == 0 ? 'true' : 'false';
+                                        @endphp
+                                        <div class="accordion-item wow fadeInUp" data-wow-delay=".{{ ($index % 5) + 2 }}s">
+                                            <h2 class="accordion-header" id="heading{{ $index }}">
+                                                <button class="accordion-button {{ $collapsed }}" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
+                                                    aria-expanded="{{ $expanded }}"
+                                                    aria-controls="collapse{{ $index }}">
+                                                    {{ $faq->question }}
+                                                </button>
+                                            </h2>
+                                            <div id="collapse{{ $index }}"
+                                                class="accordion-collapse collapse {{ $show }}" role="region"
+                                                aria-labelledby="heading{{ $index }}"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <p>{!! $faq->answer !!}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="text-center py-4">
+                                        <p class="fs-5 text-muted">No FAQ Found</p>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Contact Start -->
-
-    <!-- Contact End -->
 @endsection
