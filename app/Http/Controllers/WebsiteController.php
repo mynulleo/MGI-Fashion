@@ -4,28 +4,19 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Faq;
-use App\Models\Career;
-use App\Models\Client;
-use App\Models\Events;
 use App\Models\Feature;
 use App\Models\Package;
 use App\Models\Project;
+use App\Models\Product;
 use App\Models\Service;
 use App\Models\Category;
 use App\Models\Contacts;
 use App\Traits\MailTrait;
-use App\Models\Partnership;
 use App\Models\Testimonial;
-use App\Models\Website\News;
 use Illuminate\Http\Request;
-use App\Models\Website\Notice;
 use App\Models\Website\FrontMenu;
 use App\Http\Controllers\Controller;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Mail;
-use App\Models\Website\Gallery\Album;
-use App\Models\Website\Gallery\Photo;
-use App\Models\Website\Gallery\Video;
 use App\Models\Website\Gallery\Slider;
 use App\Models\Website\Content\Content;
 
@@ -140,23 +131,62 @@ class WebsiteController extends Controller
         ]);
     }
 
-    public function projectlist()
+    public function productlist(Request $request)
     {
-        $content = Content::where('status', 'active')->where('slug', 'project')->first();
-        $projects = Project::with('category:id,title')->where('status', 'active')->get();
+        $content = Content::where('status', 'active')->whereIn('slug', ['product', 'project'])->first();
+        
+        $categories = Category::whereIn('module_name', ['Product', 'Project', 'product', 'project'])
+            ->where('status', 'active')
+            ->get();
 
-        return view(themeBlade('pages.projectlist'), [
+        $query = Product::with('category:id,title')->where('status', 'active');
+
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhereHas('category', function ($catQ) use ($search) {
+                      $catQ->where('title', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $products = $query->orderBy('sorting', 'asc')
+            ->paginate(6)
+            ->withQueryString();
+
+        return view(themeBlade('pages.productlist'), [
             'content' => $content,
-            'projects' => $projects,
+            'categories' => $categories,
+            'products' => $products,
+            'projects' => $products,
+        ]);
+    }
+
+    public function projectlist(Request $request)
+    {
+        return $this->productlist($request);
+    }
+
+    public function product($slug)
+    {
+        $product = Product::where('slug', $slug)->first();
+        if (!$product) {
+            $product = Product::find($slug);
+        }
+
+        return view(themeBlade('pages.product'), [
+            'product' => $product,
+            'project' => $product,
         ]);
     }
 
     public function project($slug)
     {
-        $project = Project::where('slug', $slug)->first();
-
-        return view(themeBlade('pages.project'), [
-            'project' => $project
-        ]);
+        return $this->product($slug);
     }
 }
