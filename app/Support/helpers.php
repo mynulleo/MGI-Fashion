@@ -355,7 +355,7 @@ if (!function_exists('emptyImage')) {
 if (!function_exists('convertToDatabaseDate')) {
     function convertToDatabaseDate($value)
     {
-        if (is_null($value)) {
+        if (empty($value) || strtolower((string)$value) === 'undefined' || strtolower((string)$value) === 'null') {
             return null;
         }
         $date = DateTime::createFromFormat('Y-m-d', $value)
@@ -369,7 +369,8 @@ if (!function_exists('convertToDatabaseDate')) {
         if ($date) {
             return $date->format('Y-m-d');
         } else {
-            throw new \Exception("Invalid date format: " . $value);
+            $timestamp = strtotime((string)$value);
+            return $timestamp ? date('Y-m-d', $timestamp) : null;
         }
     }
 }

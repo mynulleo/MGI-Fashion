@@ -115,28 +115,28 @@ class Product extends BaseModel
 
 	public function setStartDateAttribute($value)
 	{
-		$this->attributes['start_date'] = convertToDatabaseDate($value);
+		$date = convertToDatabaseDate($value);
+		if (!is_null($date)) {
+			$this->attributes['start_date'] = $date;
+		}
 	}
 
-	public function getStartDateAttribute($value)
+	public function getStartDateAttribute($value = null)
 	{
-		return date('d M, Y', strtotime($value));
+		return (!empty($value) && strtotime((string)$value)) ? date('d M, Y', strtotime((string)$value)) : '';
 	}
 
 	public function setEndDateAttribute($value)
 	{
-		if (empty($value) || strtolower($value) === 'undefined') {
-			$this->attributes['end_date'] = null;
-		} else {
-			$this->attributes['end_date'] = convertToDatabaseDate($value);
+		$date = convertToDatabaseDate($value);
+		if (!is_null($date)) {
+			$this->attributes['end_date'] = $date;
 		}
 	}
 
-	public function getEndDateAttribute($value)
+	public function getEndDateAttribute($value = null)
 	{
-		return !empty($value)
-			? date('d M, Y', strtotime($value))
-			: '';
+		return (!empty($value) && strtotime((string)$value)) ? date('d M, Y', strtotime((string)$value)) : '';
 	}
 	public function category()
 	{

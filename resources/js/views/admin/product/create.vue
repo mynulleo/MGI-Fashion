@@ -122,8 +122,6 @@ export default {
                     );
                     formData.append("description", this.data.description);
                     formData.append("category_id", this.data.category_id);
-                    formData.append("start_date", this.data.start_date);
-                    formData.append("end_date", this.data.end_date);
                     formData.append("enable_login_system", this.data.enable_login_system);
                     formData.append("status", this.data.status);
                     if (this.data.meta_tag && this.data.meta_tag.length > 0) {
